@@ -1,0 +1,9 @@
+*.pyc
+*.py
+*.swp
+*.exe
+*.o
+*.dll
+*.ttf
+sfml/
+obj/
