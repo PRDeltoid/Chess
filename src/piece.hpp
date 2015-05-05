@@ -14,6 +14,4 @@ class Piece {
         TYPE piece_type_;
 };
 
-
-
 #endif

@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <SFML\Graphics.hpp>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -13,6 +12,7 @@ class Game
         Game();
         void Loop();
     private:
+        Board* board;
         Graphics* graphics;
 };
 
