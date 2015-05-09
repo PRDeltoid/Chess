@@ -3,6 +3,7 @@
 
 #include "piece.hpp"
 #include <iostream>
+#include <vector>
 
 struct Space {
     Piece* piece_;
@@ -14,13 +15,15 @@ const int BOARDSIZE = SIDESIZE*SIDESIZE;
 class Board {
     public:
         Board() {};
-        ~Board() {};
+        ~Board();
         void initialize_board();
         void set_space(int x, int y, Piece* piece);
         void reset_space(int x, int y);
         Piece* check_space(int x, int y);
+        void move_space(int x_from, int y_from, int x_to, int y_to);
     private:
         Space spaces[BOARDSIZE];
+        std::vector<Piece*> pieces;
 };
 
 #endif

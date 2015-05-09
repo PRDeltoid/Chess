@@ -10,11 +10,11 @@ class Game
 {
     public:
         Game();
+        ~Game();
         void Loop();
     private:
         Board* board;
         Graphics* graphics;
 };
-
 
 #endif
