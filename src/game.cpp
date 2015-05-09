@@ -4,6 +4,10 @@
 Game::Game() {
     graphics = new Graphics;
     board = new Board;
+    board->initialize_board();
+
+    Piece* test_piece = new Piece(pawn);
+    board->set_space(3, 3, test_piece); 
 }
 
 //Main Game loop. 

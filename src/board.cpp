@@ -1,11 +1,11 @@
 #include "board.hpp"
 
 void Board::initialize_board() {
-    Piece* test_piece = new Piece(rook);
     for(int i=0;i<BOARDSIZE;i++) {
         spaces[i].piece_ = NULL;
     }
-    set_space(0, 0, test_piece);
+    Piece* test_piece = new Piece(king, white);
+    set_space(3, 3, test_piece); 
 }
 
 void Board::set_space(int x, int y, Piece* piece) {
