@@ -101,48 +101,36 @@ void Graphics::load_spritesheet(std::string filename) {
 sf::RectangleShape Graphics::find_piece_graphic(TYPE piece_type, COLOR piece_color) {
     switch(piece_type) {
         case pawn:
-            if(piece_color == white)
-                return white_pawn_;
-            else
-                return black_pawn_;
+            if(piece_color == white) return white_pawn_;
+            else                     return black_pawn_;
             break;
-
         case rook:
-            if(piece_color == white)
-                return white_rook_;
-            else
-                return black_rook_;
+            if(piece_color == white) return white_rook_;
+            else                     return black_rook_;
             break;
 
         case knight:
-            if(piece_color == white)
-                return white_knight_;
-            else
-                return black_knight_;
+            if(piece_color == white) return white_knight_;
+            else                     return black_knight_;
             break;
 
         case bishop:
-            if(piece_color == white)
-                return white_bishop_;
-            else
-                return black_bishop_;
+            if(piece_color == white) return white_bishop_;
+            else                     return black_bishop_;
             break;
 
         case queen:
-            if(piece_color == white)
-                return white_queen_;
-            else
-                return black_queen_;
+            if(piece_color == white) return white_queen_;
+            else                     return black_queen_;
             break;
 
         case king:
-            if(piece_color == white)
-                return white_king_;
-            else
-                return black_king_;
+            if(piece_color == white) return white_king_;
+            else                     return black_king_;
             break;
 
         default:
+            return white_pawn_;
             break;
     }
 }
