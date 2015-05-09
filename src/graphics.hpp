@@ -3,7 +3,6 @@
 
 #include <SFML\Graphics.hpp>
 #include "board.cpp"
-#include <string>
 
 const int WIDTH = 800;
 const int HEIGHT = 800;

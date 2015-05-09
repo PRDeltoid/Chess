@@ -19,9 +19,10 @@ void Game::Loop() {
         while (graphics->poll_event(event)) {
             if (event.type == sf::Event::Closed) {
                 graphics->close_window();
+            //Test movement
             } else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A) {
-                board->move_space(0,0, 3,3);
-                board->move_space(5,5, 6,6);
+                board->move_space(0,1, 3,3);
+                board->move_space(3,1, 5,3);
             }
         }
         graphics->clear();      //Clear previously drawn screen

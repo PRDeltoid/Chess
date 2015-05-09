@@ -1,8 +1,9 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "piece.hpp"
+#include "piece.cpp"
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 struct Space {
@@ -17,6 +18,7 @@ class Board {
         Board() {};
         ~Board();
         void initialize_board();
+        void load_pieces(std::string filename);
         void set_space(int x, int y, Piece* piece);
         void reset_space(int x, int y);
         Piece* check_space(int x, int y);

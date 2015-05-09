@@ -2,8 +2,6 @@
 #define GAME_H
 
 #include <iostream>
-#include <string>
-#include <sstream>
 #include "Graphics.cpp"
 
 class Game
