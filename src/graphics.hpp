@@ -7,6 +7,7 @@
 const int WIDTH = 800;
 const int HEIGHT = 800;
 const int SQUARESIZE = 100;
+const int OUTLINEWIDTH = 3;
 
 class Graphics {
     public:
@@ -25,6 +26,7 @@ class Graphics {
         sf::RectangleShape find_piece_graphic(TYPE piece_type, COLOR piece_color);
         void render_piece(int x, int y);
         void highlight_square(int x, int y);
+        void outline_square(int x, int y);
 
     private:
         sf::RenderWindow window_;
@@ -50,6 +52,9 @@ class Graphics {
 
         sf::RectangleShape white_pawn_;
         sf::RectangleShape black_pawn_;
+
+        sf::RectangleShape highlight_;
+        sf::RectangleShape outline_;
 };
 
 #endif

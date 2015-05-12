@@ -20,6 +20,18 @@ Graphics::Graphics(Board* board) {
 
     //Clip the piece sprites. 
     clip_all_pieces();
+
+    //make the highlight square
+    sf::Color highlight_color(255, 255, 0, 150);
+    highlight_.setFillColor(highlight_color);
+    highlight_.setSize(sf::Vector2f(SQUARESIZE, SQUARESIZE));
+    
+    //make the outline square
+    sf::Color outline_color(255, 0, 0);
+    outline_.setFillColor(sf::Color::Transparent);
+    outline_.setOutlineThickness(static_cast<float>(OUTLINEWIDTH));
+    outline_.setOutlineColor(outline_color);
+    outline_.setSize(sf::Vector2f(SQUARESIZE-(OUTLINEWIDTH*2), SQUARESIZE-(OUTLINEWIDTH*2)));
 }
 
 bool Graphics::window_open() {
@@ -41,6 +53,8 @@ void Graphics::draw() {
         //If highlight is true, highlight the square
         if(board_->check_hightlight(x, y) == true)
             highlight_square(x, y);
+        if(board_->check_outline(x, y) == true)
+            outline_square(x, y);
     }
 }
 
@@ -146,14 +160,13 @@ void Graphics::render_piece(int x, int y) {
 }
 
 void Graphics::highlight_square(int x, int y) {
-    //Create the highlight color square
-    sf::RectangleShape highlight;
-    sf::Color color(255, 0, 0, 50);
-    highlight.setFillColor(color);
-    highlight.setSize(sf::Vector2f(SQUARESIZE, SQUARESIZE));
-    //Move it into position
-    highlight.setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
-    highlight.setSize(sf::Vector2f(SQUARESIZE, SQUARESIZE));
+    //Move the highlight into position
+    highlight_.setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
     //Draw the highlighted square
-    window_.draw(highlight);
+    window_.draw(highlight_);
+}
+
+void Graphics::outline_square(int x, int y) {
+    outline_.setPosition((x)*SQUARESIZE+OUTLINEWIDTH, (y)*SQUARESIZE+OUTLINEWIDTH);
+    window_.draw(outline_);
 }

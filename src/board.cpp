@@ -10,6 +10,7 @@ void Board::initialize_board() {
     for(int i=0;i<BOARDSIZE;i++) {
         spaces[i].piece_ = NULL;
         spaces[i].highlight_ = false;
+        spaces[i].outline_ = false;
     }
     load_pieces("data");
 }
@@ -38,6 +39,17 @@ void Board::load_pieces(std::string filename) {
     }
 }
 
+Pos Board::find_piece_pos(Piece* piece) {
+    for(int i = 0; i < BOARDSIZE; i++) {
+        if(spaces[i].piece_ == piece) {
+            Pos pos;
+            pos.x_ = i%SIDESIZE;
+            pos.y_ = i/SIDESIZE;
+            return pos; 
+        }
+    }
+}
+
 void Board::set_space(int x, int y, Piece* piece) {
     spaces[x+y*SIDESIZE].piece_ = piece;
 }
@@ -61,11 +73,43 @@ void Board::move_space(int x_from, int y_from, int x_to, int y_to) {
     }
 }
 
+void Board::set_active_piece(Piece* piece) {
+    active_piece_ = piece;
+}
+
+Piece* Board::get_active_piece() {
+    return active_piece_;
+}
+
 bool Board::check_hightlight(int x, int y) {
     return spaces[x+y*SIDESIZE].highlight_;
 }
 
 void Board::set_highlight(int x, int y, bool truefalse) {
     spaces[x+y*SIDESIZE].highlight_ = truefalse;
+}
 
+void Board::clear_all_highlights() {
+    for(int i = 0; i < BOARDSIZE; i++)
+        spaces[i].highlight_ = false;
+}
+
+bool Board::check_outline(int x, int y) {
+    return spaces[x+y*SIDESIZE].outline_;
+}
+
+void Board::set_outline(int x, int y, bool truefalse) {
+    spaces[x+y*SIDESIZE].outline_ = truefalse;
+}
+
+void Board::clear_all_outlines() {
+    for(int i = 0; i < BOARDSIZE; i++)
+        spaces[i].outline_ = false;
+}
+
+Pos Board::find_clicked_pos(int mouse_x, int mouse_y) {
+    Pos pos;
+    pos.x_ = mouse_x/100;
+    pos.y_ = mouse_y/100;
+    return pos;
 }
