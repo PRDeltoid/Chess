@@ -2,7 +2,7 @@
 #define GRAPHIC_H
 
 #include <SFML\Graphics.hpp>
-#include "board.cpp"
+#include "board.hpp"
 
 const int WIDTH = 800;
 const int HEIGHT = 800;
@@ -10,11 +10,11 @@ const int SQUARESIZE = 100;
 
 class Graphics {
     public:
-        Graphics();
+        Graphics(Board* board);
         ~Graphics() {}
         void initialize();
         bool window_open();
-        void draw(Board* board);
+        void draw();
         void clear();
         void display();
         void close_window();
@@ -23,9 +23,12 @@ class Graphics {
         void clip_all_pieces();
         void load_spritesheet(std::string filename);
         sf::RectangleShape find_piece_graphic(TYPE piece_type, COLOR piece_color);
+        void render_piece(int x, int y);
+        void highlight_square(int x, int y);
 
     private:
         sf::RenderWindow window_;
+        Board* board_;
         sf::RectangleShape board_shapes_[BOARDSIZE];
         sf::Texture texture_sheet_;
         sf::Image texture_image_;

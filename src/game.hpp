@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "Graphics.cpp"
+#include "Movement.cpp"
+#include "Board.cpp"
 
 class Game
 {
@@ -11,8 +13,9 @@ class Game
         ~Game();
         void Loop();
     private:
-        Board* board;
-        Graphics* graphics;
+        Board* board_;
+        Graphics* graphics_;
+        Movement* movement_;
 };
 
 #endif

@@ -1,8 +1,10 @@
 #include "graphics.hpp"
 
-Graphics::Graphics() {
+Graphics::Graphics(Board* board) {
     window_.create(sf::VideoMode(WIDTH, HEIGHT), "Chess", sf::Style::Close); //Create an unresizable window
     load_spritesheet("Chess_Pieces_Sprite.bmp"); //Load spritesheet
+
+    board_ = board;
 
     //Create the board's shapes (not the pieces).
     sf::Color black(136, 0, 12); //Alternative black.
@@ -28,21 +30,17 @@ void Graphics::display() {
     window_.display();
 }
 
-void Graphics::draw(Board* board) {
+void Graphics::draw() {
     for(int i=0;i<BOARDSIZE;i++) {
-        window_.draw(board_shapes_[i]);
+        int x = i%SIDESIZE; //Get the x coordinate for the space to draw
+        int y = i/SIDESIZE; //Get the y coordinate for the space to draw
+        window_.draw(board_shapes_[i]); //Draw the board background
         //If a piece is found, draw the piece.
-        if(board->check_space(i%SIDESIZE, i/SIDESIZE) != NULL) {
-            //Find the type and color of the piece in question
-            TYPE type = board->check_space(i%SIDESIZE, i/SIDESIZE)->get_type();
-            COLOR color = board->check_space(i%SIDESIZE, i/SIDESIZE)->get_color();
-            //Find the corrisponding graphic for piece of above type and color
-            sf::RectangleShape piece = find_piece_graphic(type, color);
-            //Move the graphic to the position of the piece on the board
-            piece.setPosition((i%SIDESIZE)*SQUARESIZE, (i/SIDESIZE)*SQUARESIZE);
-            //Draw the piece
-            window_.draw(piece);
-        }
+        if(board_->check_space(x, y) != NULL)
+            render_piece(x, y); 
+        //If highlight is true, highlight the square
+        if(board_->check_hightlight(x, y) == true)
+            highlight_square(x, y);
     }
 }
 
@@ -133,4 +131,29 @@ sf::RectangleShape Graphics::find_piece_graphic(TYPE piece_type, COLOR piece_col
             return white_pawn_;
             break;
     }
+}
+
+void Graphics::render_piece(int x, int y) {
+    //Find the type and color of the piece in question
+    TYPE type = board_->check_space(x, y)->get_type();
+    COLOR color = board_->check_space(x, y)->get_color();
+    //Find the corrisponding graphic for piece of above type and color
+    sf::RectangleShape piece = find_piece_graphic(type, color);
+    //Move the graphic to the position of the piece on the board
+    piece.setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
+    //Draw the piece
+    window_.draw(piece);
+}
+
+void Graphics::highlight_square(int x, int y) {
+    //Create the highlight color square
+    sf::RectangleShape highlight;
+    sf::Color color(255, 0, 0, 50);
+    highlight.setFillColor(color);
+    highlight.setSize(sf::Vector2f(SQUARESIZE, SQUARESIZE));
+    //Move it into position
+    highlight.setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
+    highlight.setSize(sf::Vector2f(SQUARESIZE, SQUARESIZE));
+    //Draw the highlighted square
+    window_.draw(highlight);
 }

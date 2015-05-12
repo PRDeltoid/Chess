@@ -2,31 +2,34 @@
 
 //Ctor
 Game::Game() {
-    graphics = new Graphics;
-    board = new Board;
-    board->initialize_board();
+    board_ = new Board;
+    graphics_ = new Graphics(board_);
+    movement_ = new Movement(board_);
+    board_->initialize_board();
+    board_->set_highlight(3, 3, true);
 }
 
 Game::~Game() {
-    delete graphics;
-    delete board;
+    delete graphics_;
+    delete board_;
+    delete movement_;
 }
 
 //Main Game loop. 
 void Game::Loop() {
     sf::Event event;
-    while (graphics->window_open()) {
-        while (graphics->poll_event(event)) {
+    while (graphics_->window_open()) {
+        while (graphics_->poll_event(event)) {
             if (event.type == sf::Event::Closed) {
-                graphics->close_window();
+                graphics_->close_window();
             //Test movement
             } else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A) {
-                board->move_space(0,1, 3,3);
-                board->move_space(3,1, 5,3);
+                board_->move_space(0,1, 3,3);
+                board_->move_space(3,1, 5,3);
             }
         }
-        graphics->clear();      //Clear previously drawn screen
-        graphics->draw(board);  //Draw, depending in current game state
-        graphics->display();    //Show the drawing
+        graphics_->clear();      //Clear previously drawn screen
+        graphics_->draw();  //Draw, depending in current game state
+        graphics_->display();    //Show the drawing
     }
 }

@@ -9,6 +9,7 @@ Board::~Board() {
 void Board::initialize_board() {
     for(int i=0;i<BOARDSIZE;i++) {
         spaces[i].piece_ = NULL;
+        spaces[i].highlight_ = false;
     }
     load_pieces("data");
 }
@@ -58,4 +59,13 @@ void Board::move_space(int x_from, int y_from, int x_to, int y_to) {
         //Clean up afterwards
         reset_space(x_from, y_from);
     }
+}
+
+bool Board::check_hightlight(int x, int y) {
+    return spaces[x+y*SIDESIZE].highlight_;
+}
+
+void Board::set_highlight(int x, int y, bool truefalse) {
+    spaces[x+y*SIDESIZE].highlight_ = truefalse;
+
 }

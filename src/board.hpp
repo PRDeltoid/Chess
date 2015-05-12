@@ -8,6 +8,7 @@
 
 struct Space {
     Piece* piece_;
+    bool highlight_;
 };
 
 const int SIDESIZE = 8;
@@ -23,6 +24,8 @@ class Board {
         void reset_space(int x, int y);
         Piece* check_space(int x, int y);
         void move_space(int x_from, int y_from, int x_to, int y_to);
+        bool check_hightlight(int x, int y);
+        void set_highlight(int x, int y, bool truefalse);
     private:
         Space spaces[BOARDSIZE];
         std::vector<Piece*> pieces;
