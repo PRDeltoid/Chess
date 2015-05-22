@@ -1,9 +1,10 @@
 #include "board.hpp"
 
 Board::~Board() {
-    for(unsigned int i=0; i<pieces_.size()-1; i++) {
+    /*for(unsigned int i=0; i<pieces_.size()-1; i++) {
         delete pieces_.at(i);
-    }
+    }*/
+    pieces_.clear();
 }
 
 void Board::initialize_board() {
