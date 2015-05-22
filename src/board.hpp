@@ -2,15 +2,11 @@
 #define BOARD_H
 
 #include "pos.hpp"
+#include "space.hpp"
 #include "piece.cpp"
 #include <iostream>
 #include <vector>
 
-struct Space {
-    Piece* piece_;
-    bool highlight_;
-    bool outline_;
-};
 
 using std::vector;
 
