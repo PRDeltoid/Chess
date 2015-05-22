@@ -1,10 +1,12 @@
 #include "graphics.hpp"
 
-Graphics::Graphics(Board* board) {
+Graphics::Graphics(Board* board, Highlight* highlighter, Outline* outliner) {
     window_.create(sf::VideoMode(WIDTH, HEIGHT), "Chess", sf::Style::Close); //Create an unresizable window
     load_spritesheet("Chess_Pieces_Sprite.bmp"); //Load spritesheet
 
     board_ = board;
+    highlighter_ = highlighter;
+    outliner_ = outliner;
 
     //Create the board's shapes (not the pieces).
     sf::Color black(136, 0, 12); //Alternative black.
@@ -51,9 +53,9 @@ void Graphics::draw() {
         if(board_->check_space(x, y) != NULL)
             render_piece(x, y); 
         //If highlight is true, highlight the square
-        if(board_->check_hightlight(x, y) == true)
+        if(highlighter_->check_hightlight(x, y) == true)
             highlight_square(x, y);
-        if(board_->check_outline(x, y) == true)
+        if(outliner_->check_outline(x, y) == true)
             outline_square(x, y);
     }
 }

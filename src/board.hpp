@@ -13,6 +13,8 @@ struct Space {
     bool outline_;
 };
 
+using std::vector;
+
 const int SIDESIZE = 8;
 const int BOARDSIZE = SIDESIZE*SIDESIZE;
 
@@ -26,15 +28,18 @@ class Board {
         void set_space(int x, int y, Piece* piece);
         void reset_space(int x, int y);
         Piece* check_space(int x, int y);
+        bool check_empty(int x, int y);
         void move_space(int x_from, int y_from, int x_to, int y_to);
         void set_active_piece(Piece* piece);
         Piece* get_active_piece();
-        bool check_hightlight(int x, int y);
+        /*bool check_hightlight(int x, int y);
         void set_highlight(int x, int y, bool truefalse);
+        void highlight_valid_moves(vector<Pos> valid_moves);
         void clear_all_highlights();
         bool check_outline(int x, int y);
         void set_outline(int x, int y, bool truefalse);
-        void clear_all_outlines();
+        void clear_all_outlines();*/
+        Space* get_spaces();
 
         Pos find_clicked_pos(int mouse_x, int mouse_y);
     private:

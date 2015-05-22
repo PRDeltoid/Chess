@@ -1,6 +1,6 @@
 all: Chess 
 
-Chess: main.o
+Chess: main.o 
 	g++  obj/main.o -o Chess -LSFML/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 main.o: main.cpp

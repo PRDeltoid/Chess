@@ -3,6 +3,8 @@
 
 #include <SFML\Graphics.hpp>
 #include "board.hpp"
+#include "highlight.hpp"
+#include "outline.hpp"
 
 const int WIDTH = 800;
 const int HEIGHT = 800;
@@ -11,7 +13,7 @@ const int OUTLINEWIDTH = 3;
 
 class Graphics {
     public:
-        Graphics(Board* board);
+        Graphics(Board* board, Highlight* highlighter, Outline* outliner);
         ~Graphics() {}
         void initialize();
         bool window_open();
@@ -31,6 +33,8 @@ class Graphics {
     private:
         sf::RenderWindow window_;
         Board* board_;
+        Highlight* highlighter_;
+        Outline* outliner_;
         sf::RectangleShape board_shapes_[BOARDSIZE];
         sf::Texture texture_sheet_;
         sf::Image texture_image_;
