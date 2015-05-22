@@ -9,7 +9,7 @@ Game::Game() {
     movement_    = new Movement(board_);
     dataloader_  = new DataLoader(board_);
     board_->initialize_board();
-    dataloader_->load_pieces("data");
+    dataloader_->load_pieces("data/piecedata");
     active_player = white;
 }
 

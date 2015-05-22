@@ -1,2 +1,0 @@
-# Chess
-Game of Chess

@@ -2,7 +2,7 @@
 
 Graphics::Graphics(Board* board, Highlight* highlighter, Outline* outliner) {
     window_.create(sf::VideoMode(WIDTH, HEIGHT), "Chess", sf::Style::Close); //Create an unresizable window
-    load_spritesheet("Chess_Pieces_Sprite.bmp"); //Load spritesheet
+    load_spritesheet("assets/sprites/Chess_Pieces_Sprite.bmp"); //Load spritesheet
 
     board_ = board;
     highlighter_ = highlighter;
