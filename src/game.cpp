@@ -42,10 +42,8 @@ void Game::piece_clicked(Pos pos) {
     board_->set_active_piece(clicked_piece);            //Set the clicked piece to active
     outliner_->clear_all_outlines();                       //Clear previous outlines
     outliner_->set_outline(pos.x_, pos.y_, true);          //Create an outline around the clicked piecce
-    //board_->clear_all_highlights();
     highlighter_->clear_all_highlights();
     vector<Pos> valid_moves = movement_->get_valid_moves(clicked_piece);
-    //board_->highlight_valid_moves(valid_moves);    //Highlight the valid moves for the piece
     highlighter_->highlight_valid_moves(valid_moves);    //Highlight the valid moves for the piece
 }
 

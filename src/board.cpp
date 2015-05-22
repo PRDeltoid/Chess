@@ -93,44 +93,6 @@ Piece* Board::get_active_piece() {
     return active_piece_;
 }
 
-/*bool Board::check_hightlight(int x, int y) {
-    return spaces[x+y*SIDESIZE].highlight_;
-}
-
-void Board::set_highlight(int x, int y, bool truefalse) {
-    spaces[x+y*SIDESIZE].highlight_ = truefalse;
-}
-
-void Board::highlight_valid_moves(vector<Pos> valid_moves) {
-    if(valid_moves.size() < 1) {                   //Exit if there are no valid moves to highlight
-        std::cout << "No valid moves found" << std::endl;
-        return;
-    }
-
-    for(unsigned int i=0; i < valid_moves.size()-1; i++) {                   //Loop through the valid_moves vector
-        std::cout << "x: " << valid_moves[i].x_ << " y: " << valid_moves[i].y_ << std::endl;
-        set_highlight(valid_moves[i].x_, valid_moves[i].y_, true); //highlight all of those spaces on the board
-    }
-}
-
-void Board::clear_all_highlights() {
-    for(int i = 0; i < BOARDSIZE; i++)
-        spaces[i].highlight_ = false;
-}
-
-bool Board::check_outline(int x, int y) {
-    return spaces[x+y*SIDESIZE].outline_;
-}
-
-void Board::set_outline(int x, int y, bool truefalse) {
-    spaces[x+y*SIDESIZE].outline_ = truefalse;
-}
-
-void Board::clear_all_outlines() {
-    for(int i = 0; i < BOARDSIZE; i++)
-        spaces[i].outline_ = false;
-}*/
-
 Space* Board::get_spaces() {
     return spaces;
 }
