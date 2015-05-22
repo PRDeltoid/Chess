@@ -1,8 +1,8 @@
 #include "board.hpp"
 
 Board::~Board() {
-    for(unsigned int i=0; i<pieces.size()-1; i++) {
-        delete pieces.at(i);
+    for(unsigned int i=0; i<pieces_.size()-1; i++) {
+        delete pieces_.at(i);
     }
 }
 
@@ -12,31 +12,10 @@ void Board::initialize_board() {
         spaces[i].highlight_ = false;
         spaces[i].outline_ = false;
     }
-    load_pieces("data");
 }
 
-void Board::load_pieces(std::string filename) {
-    //Open the data file
-    std::ifstream datafile;
-    datafile.open(filename.c_str());
-    //Read data file if open
-    if(datafile.is_open()) {
-        Piece* piece;
-        int piece_x,
-            piece_y;
-        std::string piece_color,
-                    piece_type;
-        while(datafile >> piece_x) {
-            datafile >> piece_y;
-            datafile >> piece_color;
-            datafile >> piece_type;
-            //Create the piece after reading
-            piece = new Piece(piece_type, piece_color);  
-            pieces.push_back(piece);
-            //Set up the piece on the board
-            set_space(piece_x, piece_y, piece);
-        }
-    }
+void Board::add_piece(Piece* piece) {
+    pieces_.push_back(piece);
 }
 
 Pos Board::find_piece_pos(Piece* piece) {

@@ -7,7 +7,9 @@ Game::Game() {
     outliner_ = new Outline(board_);
     graphics_ = new Graphics(board_, highlighter_, outliner_);
     movement_ = new Movement(board_);
+    dataloader_ = new DataLoader(board_);
     board_->initialize_board();
+    dataloader_->load_pieces("data");
     active_player = white;
 }
 
@@ -17,6 +19,7 @@ Game::~Game() {
     delete movement_;
     delete highlighter_;
     delete outliner_;
+    delete dataloader_;
 }
 
 void Game::switch_player() {

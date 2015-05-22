@@ -4,7 +4,6 @@
 #include "pos.hpp"
 #include "piece.cpp"
 #include <iostream>
-#include <fstream>
 #include <vector>
 
 struct Space {
@@ -23,7 +22,7 @@ class Board {
         Board() {};
         ~Board();
         void initialize_board();
-        void load_pieces(std::string filename);
+        void add_piece(Piece* piece);
         Pos find_piece_pos(Piece* piece);
         void set_space(int x, int y, Piece* piece);
         void reset_space(int x, int y);
@@ -37,7 +36,7 @@ class Board {
         Pos find_clicked_pos(int mouse_x, int mouse_y);
     private:
         Space spaces[BOARDSIZE];
-        std::vector<Piece*> pieces;
+        vector<Piece*> pieces_;
         Piece* active_piece_;
 };
 

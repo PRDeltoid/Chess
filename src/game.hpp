@@ -1,12 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostream>
 #include "Graphics.cpp"
 #include "Movement.cpp"
 #include "Board.cpp"
 #include "highlight.cpp"
 #include "outline.cpp"
+#include "dataloader.cpp"
 
 class Game
 {
@@ -24,6 +24,7 @@ class Game
         Movement* movement_;
         Highlight* highlighter_;
         Outline* outliner_;
+        DataLoader* dataloader_;
 };
 
 #endif
