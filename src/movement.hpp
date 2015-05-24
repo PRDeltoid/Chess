@@ -23,6 +23,7 @@ class Movement {
         vector<Pos> merge_vector(vector<Pos> vector1, vector<Pos> vector2);
         bool pos_valid(Pos pos);
         bool share_color(Pos piece1, Pos piece2);
+        bool add_move(Pos move, Pos piece_pos, vector<Pos>& valid_moves);
         void validate_pos_vector(vector<Pos>& vector);
     private:
         Board* board_;

@@ -10,7 +10,7 @@ Game::Game() {
     dataloader_  = new DataLoader(board_);
     board_->initialize_board();
     dataloader_->load_pieces("data/piecedata");
-    active_player = white;
+    active_player = black;
 }
 
 //Dtor
