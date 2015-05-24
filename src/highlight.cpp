@@ -19,8 +19,7 @@ void Highlight::highlight_valid_moves(vector<Pos> valid_moves) {
         return;
     }
 
-    for(unsigned int i=0; i < valid_moves.size()-1; i++) {                   //Loop through the valid_moves vector
-        std::cout << "x: " << valid_moves[i].x_ << " y: " << valid_moves[i].y_ << std::endl;
+    for(unsigned int i=0; i < valid_moves.size(); i++) {                   //Loop through the valid_moves vector
         set_highlight(valid_moves[i].x_, valid_moves[i].y_, true); //highlight all of those spaces on the board
     }
 }

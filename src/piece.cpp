@@ -18,4 +18,6 @@ Piece::Piece(std::string piece_type, std::string piece_color) {
         piece_type_ = rook;
     else 
         piece_type_ = pawn;
+
+    has_moved_ = false;
 }

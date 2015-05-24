@@ -45,6 +45,8 @@ bool Game::was_piece_clicked(Pos pos_clicked) {
 //Handle when a piece is clicked
 void Game::piece_clicked(Pos pos) {
     Piece* clicked_piece = board_->check_space(pos.x_, pos.y_);
+    if(board_->get_active_piece() == clicked_piece)        //Check if the piece clicked is already active
+        return;                                           
     board_->set_active_piece(clicked_piece);               //Set the clicked piece to active
     outliner_->clear_all_outlines();                       //Clear previous outlines
     outliner_->set_outline(pos.x_, pos.y_, true);          //Create an outline around the clicked piecce
