@@ -33,6 +33,8 @@ void Game::switch_player() {
 }
 
 //Determine if the position had a piece, and the piece clicked belongs to the current player
+//Returns true if the piece clicked is the current player
+//Returns false if a piece wasn't clicked, or the piece belongs to the inactive player
 bool Game::was_piece_clicked(Pos pos_clicked) {
     if(!board_->check_empty(pos_clicked.x_, pos_clicked.y_) && 
         board_->check_space(pos_clicked.x_, pos_clicked.y_)->get_color() == active_player) {
