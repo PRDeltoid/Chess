@@ -27,18 +27,26 @@ vector<Pos> Movement::get_valid_moves(Piece* piece) {
 vector<Pos> Movement::get_column(Piece* piece) {
     Pos piece_pos = board_->find_piece_pos(piece);  //Find the piece to get the current column of
     vector<Pos> valid_moves;                        //Create a valid moves vector
-    for(int i = 0; i < SIDESIZE; i++) {             //Move through the current piece's row. 
+   
+    for(int i = 1; i < SIDESIZE; i++) {
         Pos move;
-        //If the current position is the piece, ignore it
-        if(i == piece_pos.y_) {
-            continue;
-        }
         move.x_ = piece_pos.x_;
-        move.y_ = i;
-        /*if(blocked(move, piece->get_color())) {     //Check if the piece is blocked by a friendly piece 
-            return valid_moves;                     //If it's blocked, stop finding new valid moves and return
-        }*/
-        valid_moves.push_back(move);                //If the piece wasn't blocked, push the valid move into the valid moves vector
+        move.y_ = piece_pos.y_+i;
+        if(!pos_valid(move) || share_color(piece_pos, move))
+            break;
+        valid_moves.push_back(move);
+        if(blocked(move)) 
+            break;
+    }
+    for(int i = 1; i < SIDESIZE; i++) {
+        Pos move;
+        move.x_ = piece_pos.x_;
+        move.y_ = piece_pos.y_-i;
+        if(!pos_valid(move) || share_color(piece_pos, move))
+            break;
+        valid_moves.push_back(move);
+        if(blocked(move)) 
+            break;
     }
     return valid_moves;                             //Return the valid moves vector
 }
@@ -46,17 +54,26 @@ vector<Pos> Movement::get_column(Piece* piece) {
 vector<Pos> Movement::get_row(Piece* piece) {
     Pos piece_pos = board_->find_piece_pos(piece);
     vector<Pos> valid_moves;
-    for(int i = 0; i < SIDESIZE; i++) {
+    
+    for(int i = 1; i < SIDESIZE; i++) {
         Pos move;
-        if(i == piece_pos.x_) {
-            continue;
-        }
-        move.x_ = i;
+        move.x_ = piece_pos.x_+i;
         move.y_ = piece_pos.y_;
-        /*if(blocked(move, piece->get_color())) {
-            return valid_moves;
-        }*/
+        if(!pos_valid(move) || share_color(piece_pos, move))
+            break;
         valid_moves.push_back(move);
+        if(blocked(move)) 
+            break;
+    }
+    for(int i = 1; i < SIDESIZE; i++) {
+        Pos move;
+        move.x_ = piece_pos.x_-i;
+        move.y_ = piece_pos.y_;
+        if(!pos_valid(move) || share_color(piece_pos, move))
+            break;
+        valid_moves.push_back(move);
+        if(blocked(move)) 
+            break;
     }
     return valid_moves;
 }
@@ -68,15 +85,22 @@ vector<Pos> Movement::get_diag(Piece* piece) {
         Pos move;
         move.x_ = piece_pos.x_+i;
         move.y_ = piece_pos.y_+i;
+        if(!pos_valid(move) || share_color(piece_pos, move))
+            break;
         valid_moves.push_back(move);
+        if(blocked(move)) 
+            break;
     }
     for(int i = 1; i < SIDESIZE; i++) {
         Pos move;
         move.x_ = piece_pos.x_-i;
         move.y_ = piece_pos.y_-i;
+        if(!pos_valid(move) || share_color(piece_pos, move))
+            break;
         valid_moves.push_back(move);
+        if(blocked(move)) 
+            break;
     }
-    validate_pos_vector(valid_moves);
     return valid_moves;
 } 
 
@@ -87,18 +111,21 @@ vector<Pos> Movement::get_antidiag(Piece* piece) {
         Pos move;
         move.x_ = piece_pos.x_+i;
         move.y_ = piece_pos.y_-i;
-        if(!pos_valid(move)) {
+        if(!pos_valid(move) || share_color(piece_pos, move))
             break;
-        }
         valid_moves.push_back(move);
+        if(blocked(move)) 
+            break;
     }
     for(int i = 1; i < SIDESIZE; i++) {
         Pos move;
         move.x_ = piece_pos.x_-i;
         move.y_ = piece_pos.y_+i;
-        if(pos_valid(move)) {
-            valid_moves.push_back(move);
-        }
+        if(!pos_valid(move) || share_color(piece_pos, move))
+            break;
+        valid_moves.push_back(move);
+        if(blocked(move)) 
+            break;
     }
     return valid_moves;
 }
@@ -121,7 +148,8 @@ vector<Pos> Movement::get_pawn_move(Piece* piece) {
     for(int i=1; i <= move_distance; i++) {
         move_pos.y_ = piece_pos.y_ + (i*move_direction);
         move_pos.x_ = piece_pos.x_;
-        valid_moves.push_back(move_pos);
+        if(pos_valid(move_pos) && !blocked(move_pos))
+            valid_moves.push_back(move_pos);
     }
     validate_pos_vector(valid_moves);
     return valid_moves;
@@ -133,35 +161,43 @@ vector<Pos> Movement::get_knight_move(Piece* piece) {
     Pos move;
     move.x_ = piece_pos.x_ + 2;
     move.y_ = piece_pos.y_ + 1;
-    valid_moves.push_back(move);
+    if(!share_color(piece_pos, move)) 
+        valid_moves.push_back(move);
 
     move.x_ = piece_pos.x_ - 2;
     move.y_ = piece_pos.y_ - 1;
-    valid_moves.push_back(move);
+    if(!share_color(piece_pos, move)) 
+        valid_moves.push_back(move);
     
     move.x_ = piece_pos.x_ + 1;
     move.y_ = piece_pos.y_ + 2;
-    valid_moves.push_back(move);
+    if(!share_color(piece_pos, move)) 
+        valid_moves.push_back(move);
     
     move.x_ = piece_pos.x_ - 1;
     move.y_ = piece_pos.y_ - 2;
-    valid_moves.push_back(move);
+    if(!share_color(piece_pos, move)) 
+        valid_moves.push_back(move);
 
     move.x_ = piece_pos.x_ - 2;
     move.y_ = piece_pos.y_ + 1;
-    valid_moves.push_back(move);
+    if(!share_color(piece_pos, move)) 
+        valid_moves.push_back(move);
 
     move.x_ = piece_pos.x_ - 1;
     move.y_ = piece_pos.y_ + 2;
-    valid_moves.push_back(move);
+    if(!share_color(piece_pos, move)) 
+        valid_moves.push_back(move);
 
     move.x_ = piece_pos.x_ + 1;
     move.y_ = piece_pos.y_ - 2;
-    valid_moves.push_back(move);
+    if(!share_color(piece_pos, move)) 
+        valid_moves.push_back(move);
 
     move.x_ = piece_pos.x_ + 2;
     move.y_ = piece_pos.y_ - 1;
-    valid_moves.push_back(move);
+    if(!share_color(piece_pos, move)) 
+        valid_moves.push_back(move);
 
     validate_pos_vector(valid_moves);
     return valid_moves;
@@ -173,7 +209,7 @@ vector<Pos> Movement::get_king_move(Piece* piece) {
     Pos move;
     move.x_ = piece_pos.x_ + 1;
     move.y_ = piece_pos.y_ + 1;
-    if(pos_valid(move)) {
+    if(pos_valid(move) && !share_color(piece_pos, move)) {
         valid_moves.push_back(move);
     }
     return valid_moves;
@@ -198,23 +234,37 @@ bool Movement::pos_valid(Pos pos) {
         return true;
 }
 
+bool Movement::share_color(Pos piece1_pos, Pos piece2_pos) {
+    Piece* piece1 = board_->check_space(piece1_pos.x_, piece1_pos.y_);
+    Piece* piece2 = board_->check_space(piece2_pos.x_, piece2_pos.y_);
+    if(piece1 != NULL && piece2 != NULL) {
+        if(piece1->get_color() == piece2->get_color()) 
+            return true;
+        else
+            return false;
+    }
+    return false;
+}
+
 void Movement::validate_pos_vector(vector<Pos>& vector) {
-    for(unsigned int i=0; i<vector.size()-1; i++) {
-        if(!pos_valid(vector.at(i))) {
-            std::cout << "Invalid" << std::endl;
-            vector.erase(vector.begin()+i);
+    std::vector<Pos>::iterator itt;
+    for(itt = vector.begin(); itt != vector.end(); itt++) {
+        //If a position is outside the board, get rid of it
+        if(!pos_valid(*itt)) {
+            vector.erase(itt);
+            //move the itterator back if a pos is deleted
+            itt--;
         }
     }
 }
 
 //TODO
-bool Movement::blocked(Pos pos_to_check, COLOR piece_color) {
+bool Movement::blocked(Pos pos_to_check) {
     int x = pos_to_check.x_;
     int y = pos_to_check.y_;
 
     if(board_->check_empty(x, y)) {
-        if(board_->check_space(x, y)->get_color() == piece_color)
-            return true;
+        return false;
     }
-    return false;
+    return true;
 }

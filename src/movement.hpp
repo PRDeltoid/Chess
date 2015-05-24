@@ -22,10 +22,11 @@ class Movement {
         vector<Pos> get_king_move(Piece* piece);
         vector<Pos> merge_vector(vector<Pos> vector1, vector<Pos> vector2);
         bool pos_valid(Pos pos);
+        bool share_color(Pos piece1, Pos piece2);
         void validate_pos_vector(vector<Pos>& vector);
     private:
         Board* board_;
-        bool blocked(Pos pos_to_check, COLOR piece_color);
+        bool blocked(Pos pos_to_check);
 };
 
 #endif
