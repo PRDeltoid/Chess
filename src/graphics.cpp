@@ -1,5 +1,6 @@
 #include "graphics.hpp"
 
+//Ctor
 Graphics::Graphics(Game* game) {
     window_ = game->get_window();
     board_  = game->get_board();
@@ -8,6 +9,11 @@ Graphics::Graphics(Game* game) {
     initialize();
 }
 
+//Load piece graphics. 
+//Create the board pieces (not the chess pieces, the board squares)
+//Clip the chess piece sprites from the spritesheet
+//Setup highlight graphic
+//Setup Outline graphic
 void Graphics::initialize() {
     load_spritesheet("assets/sprites/Chess_Pieces_Sprite.bmp"); //Load spritesheet
     sf::Color black(136, 0, 12); //Alternative black.
@@ -37,6 +43,9 @@ void Graphics::initialize() {
     outline_.setSize(sf::Vector2f(SQUARESIZE-(OUTLINEWIDTH*2), SQUARESIZE-(OUTLINEWIDTH*2)));
 }
 
+//Loop through the board and draw all the squares.
+//If a square has a piece, render the piece. 
+//If a square has highlight/outline, render that.
 void Graphics::draw() {
     for(int i=0;i<BOARDSIZE;i++) {
         int x = i%SIDESIZE; //Get the x coordinate for the space to draw
@@ -53,20 +62,24 @@ void Graphics::draw() {
     }
 }
 
+//Interface to clear the window.
 void Graphics::clear() {
     window_->clear();
 }
 
+//Interface to display the window's shapes
 void Graphics::display() {
     window_->display();
 }
 
+//Encasulating function for clear/draw/display
 void Graphics::render() {
     clear();
     draw();
     display();
 }
 
+//Clip a single chess piece graphics and store it in the piece variable
 void Graphics::clip_piece(sf::RectangleShape& piece, int from_left, int from_top) {
     //Create a clipping rectangle size 100x100 pixels. Position it using from_left and from_top
     sf::Rect<int> clip_rect;
@@ -80,6 +93,7 @@ void Graphics::clip_piece(sf::RectangleShape& piece, int from_left, int from_top
     piece.setTextureRect(clip_rect);
 }
 
+//Go through the spritesheet and clip the chess piece graphics
 void Graphics::clip_all_pieces() {
     clip_piece(white_king_, 0, 0);
     clip_piece(black_king_, 0, 1);
@@ -100,6 +114,7 @@ void Graphics::clip_all_pieces() {
     clip_piece(black_pawn_, 5, 1);
 }
 
+//Loads a spritesheet from a file
 void Graphics::load_spritesheet(std::string filename) {
     texture_image_.loadFromFile(filename); 
     texture_image_.createMaskFromColor(sf::Color::Green, 0); //Transparency key
@@ -107,6 +122,7 @@ void Graphics::load_spritesheet(std::string filename) {
     texture_sheet_.setSmooth(true); //Smooth edges
 }
 
+//Returns the piece graphic to use depending on piece type and color
 sf::RectangleShape Graphics::find_piece_graphic(TYPE piece_type, COLOR piece_color) {
     switch(piece_type) {
         case pawn:
@@ -144,6 +160,7 @@ sf::RectangleShape Graphics::find_piece_graphic(TYPE piece_type, COLOR piece_col
     }
 }
 
+//Draw the piece that is at position x and y on the board
 void Graphics::render_piece(int x, int y) {
     //Find the type and color of the piece in question
     TYPE type = board_->check_space(x, y)->get_type();
@@ -156,6 +173,7 @@ void Graphics::render_piece(int x, int y) {
     window_->draw(piece);
 }
 
+//Draw a highlight over position x and y
 void Graphics::highlight_square(int x, int y) {
     //Move the highlight into position
     highlight_.setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
@@ -163,6 +181,7 @@ void Graphics::highlight_square(int x, int y) {
     window_->draw(highlight_);
 }
 
+//Draw a outline over position x and y
 void Graphics::outline_square(int x, int y) {
     outline_.setPosition((x)*SQUARESIZE+OUTLINEWIDTH, (y)*SQUARESIZE+OUTLINEWIDTH);
     window_->draw(outline_);

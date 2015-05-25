@@ -283,10 +283,13 @@ void Movement::clear_valid_moves() {
 //Checks if a move is valid (if the position clicked is on
 //the valid moves list)
 bool Movement::is_valid_move(Pos pos_clicked) {
+    //Exit early if there is no valid move list
     if(valid_moves_.size() < 1)
         return false;
+    //Loop through all valid moves and compare it to the position clicked
     for(unsigned int i=0; i < valid_moves_.size(); i++) {
         if(valid_moves_[i] == pos_clicked) {
+            //If a move is valid, move the piece.
             board_->get_active_piece()->set_moved(true);
             Pos piece_pos = board_->find_piece_pos(board_->get_active_piece());
             move_piece(piece_pos, pos_clicked);
