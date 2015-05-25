@@ -10,7 +10,7 @@ Game::Game() {
     dataloader_  = new DataLoader(board_);
     board_->initialize_board();
     dataloader_->load_pieces("data/piecedata");
-    active_player = black;
+    active_player = white;
 }
 
 //Dtor
@@ -57,6 +57,11 @@ void Game::piece_clicked(Pos pos) {
     highlighter_->highlight_valid_moves(valid_moves);      //Highlight the valid moves for the piece
 }
 
+//Determines if a valid move was clicked
+bool Game::move_clicked(Pos pos_clicked) {
+    return movement_->is_valid_move(pos_clicked);
+}
+
 //Main Game loop. 
 void Game::Loop() {
     sf::Event event;
@@ -68,6 +73,16 @@ void Game::Loop() {
             } else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 //Get the position that was clicked
                 Pos pos_clicked = board_->find_clicked_pos(event.mouseButton.x, event.mouseButton.y);
+                //Determine if the position clicked is a valid move (only if there is an active piece)
+                //If it is, move the piece and clear the board of all highlighting/outlining etc.
+                //Lastly, switch the active player
+                if(board_->get_active_piece() != NULL && move_clicked(pos_clicked)) {
+                    highlighter_->clear_all_highlights();
+                    outliner_->clear_all_outlines();
+                    movement_->clear_valid_moves();
+                    switch_player();
+                    break;
+                }
                 //Determine if the position had a piece, and the piece clicked belongs to the current player
                 if(was_piece_clicked(pos_clicked))
                     piece_clicked(pos_clicked);

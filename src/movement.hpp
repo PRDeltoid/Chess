@@ -25,9 +25,13 @@ class Movement {
         bool share_color(Pos piece1, Pos piece2);
         bool add_move(Pos move, Pos piece_pos, vector<Pos>& valid_moves);
         void validate_pos_vector(vector<Pos>& vector);
+        void clear_valid_moves();
+        bool is_valid_move(Pos pos);
+        void move_piece(Pos pos_from, Pos pos_to);
     private:
         Board* board_;
         bool blocked(Pos pos_to_check);
+        vector<Pos> valid_moves_;
 };
 
 #endif

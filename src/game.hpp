@@ -17,7 +17,8 @@ class Game
     private:
         void switch_player();
         bool was_piece_clicked(Pos pos_clicked);
-        void piece_clicked(Pos pos); //TODO
+        void piece_clicked(Pos pos);
+        bool move_clicked(Pos pos_clicked);
         COLOR active_player;
         Board* board_;
         Graphics* graphics_;

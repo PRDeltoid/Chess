@@ -22,6 +22,7 @@ vector<Pos> Movement::get_valid_moves(Piece* piece) {
         default:
             break;
     };
+    valid_moves_ = valid_moves;
     return valid_moves;
 }
 
@@ -249,4 +250,33 @@ bool Movement::blocked(Pos pos_to_check) {
         return false;
     }
     return true;
+}
+
+void Movement::clear_valid_moves() {
+    valid_moves_.clear();
+}
+
+//Checks if a move is valid (if the position clicked is on
+//the valid moves list)
+bool Movement::is_valid_move(Pos pos_clicked) {
+    if(valid_moves_.size() < 1)
+        return false;
+    for(unsigned int i=0; i < valid_moves_.size(); i++) {
+        if(valid_moves_[i] == pos_clicked) {
+            Pos piece_pos = board_->find_piece_pos(board_->get_active_piece());
+            move_piece(piece_pos, pos_clicked);
+            return true;
+        }
+    }
+    return false;
+}
+
+//Moves a piece and sets the active piece to null afterwards.
+//Also deletes any piece landed on by the active piece, to prevent memory leaks
+void Movement::move_piece(Pos pos_from, Pos pos_to) {
+    Piece* dead_piece = board_->check_space(pos_to.x_, pos_to.y_);
+    delete dead_piece; //Delete the piece that is about to be killed.
+    board_->move_space(pos_from.x_, pos_from.y_, pos_to.x_, pos_to.y_);
+    board_->move_space(pos_from, pos_to);
+    board_->set_active_piece(NULL); 
 }
