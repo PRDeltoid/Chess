@@ -149,36 +149,28 @@ vector<Pos> Movement::get_knight_move(Piece* piece) {
     Pos piece_pos = board_->find_piece_pos(piece);
     vector<Pos> valid_moves;
     Pos move(piece_pos.x_ + 2, piece_pos.y_ + 1);
-    if(!share_color(piece_pos, move)) 
-        valid_moves.push_back(move);
+    add_move(move, piece_pos, valid_moves);
 
     move.set_pos(piece_pos.x_ -2, piece_pos.y_ -1);
-    if(!share_color(piece_pos, move)) 
-        valid_moves.push_back(move);
+    add_move(move, piece_pos, valid_moves);
     
     move.set_pos(piece_pos.x_ +1, piece_pos.y_ +2);
-    if(!share_color(piece_pos, move)) 
-        valid_moves.push_back(move);
+    add_move(move, piece_pos, valid_moves);
     
     move.set_pos(piece_pos.x_ -1, piece_pos.y_ -2);
-    if(!share_color(piece_pos, move)) 
-        valid_moves.push_back(move);
+    add_move(move, piece_pos, valid_moves);
 
     move.set_pos(piece_pos.x_ -2, piece_pos.y_ +1);
-    if(!share_color(piece_pos, move)) 
-        valid_moves.push_back(move);
+    add_move(move, piece_pos, valid_moves);
 
     move.set_pos(piece_pos.x_ -1, piece_pos.y_ +2);
-    if(!share_color(piece_pos, move)) 
-        valid_moves.push_back(move);
+    add_move(move, piece_pos, valid_moves);
 
     move.set_pos(piece_pos.x_ +1, piece_pos.y_ -2);
-    if(!share_color(piece_pos, move)) 
-        valid_moves.push_back(move);
+    add_move(move, piece_pos, valid_moves);
 
     move.set_pos(piece_pos.x_ +2, piece_pos.y_ -1);
-    if(!share_color(piece_pos, move)) 
-        valid_moves.push_back(move);
+    add_move(move, piece_pos, valid_moves);
 
     validate_pos_vector(valid_moves);
     return valid_moves;
