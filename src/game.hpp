@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Graphics.cpp"
+//#include "Graphics.cpp"
 #include "Movement.cpp"
 #include "Board.cpp"
 #include "highlight.cpp"
@@ -11,6 +11,7 @@
 
 //Forward delc. of UI to prevent circle dependancy
 class UI;
+class Graphics;
 
 class Game
 {
@@ -23,6 +24,7 @@ class Game
         Highlight* get_highlighter() { return highlighter_; }
         Outline* get_outliner() { return outliner_; }
         COLOR get_active_player() { return active_player; }
+        Window* get_window() { return window_; }
         void switch_player();
 
     private:

@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "ui.cpp"
+#include "graphics.cpp"
 
 //Ctor
 Game::Game() {
@@ -7,7 +8,7 @@ Game::Game() {
     highlighter_ = new Highlight(board_);
     outliner_    = new Outline(board_);
     window_      = new Window();
-    graphics_    = new Graphics(board_, highlighter_, outliner_, window_);
+    graphics_    = new Graphics(this);
     movement_    = new Movement(board_);
     dataloader_  = new DataLoader(board_);
     ui_          = new UI(this);
@@ -24,6 +25,8 @@ Game::~Game() {
     delete highlighter_;
     delete outliner_;
     delete dataloader_;
+    delete ui_;
+    delete window_;
 }
 
 //Switch the active player to the other

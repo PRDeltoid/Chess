@@ -1,15 +1,15 @@
 #include "graphics.hpp"
 
-Graphics::Graphics(Board* board, Highlight* highlighter, Outline* outliner, Window* window) {
-    //window_.create(sf::VideoMode(WIDTH, HEIGHT), "Chess", sf::Style::Close); //Create an unresizable window
+Graphics::Graphics(Game* game) {
+    window_ = game->get_window();
+    board_  = game->get_board();
+    highlighter_ = game->get_highlighter();
+    outliner_ = game->get_outliner();
+    initialize();
+}
+
+void Graphics::initialize() {
     load_spritesheet("assets/sprites/Chess_Pieces_Sprite.bmp"); //Load spritesheet
-
-    board_ = board;
-    highlighter_ = highlighter;
-    outliner_ = outliner;
-    window_ = window;
-
-    //Create the board's shapes (not the pieces).
     sf::Color black(136, 0, 12); //Alternative black.
     for(int i=0;i<BOARDSIZE;i++) {
         if((i%2==0 && (i/8)%2==0) || (i%2==1 && (i/8)%2==1)) {
@@ -51,6 +51,14 @@ void Graphics::draw() {
         if(outliner_->check_outline(x, y) == true)
             outline_square(x, y);
     }
+}
+
+void Graphics::clear() {
+    window_->clear();
+}
+
+void Graphics::display() {
+    window_->display();
 }
 
 void Graphics::clip_piece(sf::RectangleShape& piece, int from_left, int from_top) {
