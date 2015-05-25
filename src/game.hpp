@@ -7,6 +7,7 @@
 #include "highlight.cpp"
 #include "outline.cpp"
 #include "dataloader.cpp"
+#include "window.hpp"
 
 //Forward delc. of UI to prevent circle dependancy
 class UI;
@@ -36,6 +37,7 @@ class Game
         Outline* outliner_;
         DataLoader* dataloader_;
         UI* ui_;
+        Window* window_;
 };
 
 #endif

@@ -1,12 +1,13 @@
 #include "graphics.hpp"
 
-Graphics::Graphics(Board* board, Highlight* highlighter, Outline* outliner) {
-    window_.create(sf::VideoMode(WIDTH, HEIGHT), "Chess", sf::Style::Close); //Create an unresizable window
+Graphics::Graphics(Board* board, Highlight* highlighter, Outline* outliner, Window* window) {
+    //window_.create(sf::VideoMode(WIDTH, HEIGHT), "Chess", sf::Style::Close); //Create an unresizable window
     load_spritesheet("assets/sprites/Chess_Pieces_Sprite.bmp"); //Load spritesheet
 
     board_ = board;
     highlighter_ = highlighter;
     outliner_ = outliner;
+    window_ = window;
 
     //Create the board's shapes (not the pieces).
     sf::Color black(136, 0, 12); //Alternative black.
@@ -36,19 +37,11 @@ Graphics::Graphics(Board* board, Highlight* highlighter, Outline* outliner) {
     outline_.setSize(sf::Vector2f(SQUARESIZE-(OUTLINEWIDTH*2), SQUARESIZE-(OUTLINEWIDTH*2)));
 }
 
-bool Graphics::window_open() {
-    return window_.isOpen();
-}
-
-void Graphics::display() {
-    window_.display();
-}
-
 void Graphics::draw() {
     for(int i=0;i<BOARDSIZE;i++) {
         int x = i%SIDESIZE; //Get the x coordinate for the space to draw
         int y = i/SIDESIZE; //Get the y coordinate for the space to draw
-        window_.draw(board_shapes_[i]); //Draw the board background
+        window_->draw(board_shapes_[i]); //Draw the board background
         //If a piece is found, draw the piece.
         if(board_->check_space(x, y) != NULL)
             render_piece(x, y); 
@@ -58,18 +51,6 @@ void Graphics::draw() {
         if(outliner_->check_outline(x, y) == true)
             outline_square(x, y);
     }
-}
-
-void Graphics::clear() {
-    window_.clear();
-}
-
-void Graphics::close_window() {
-    window_.close();
-}
-
-bool Graphics::poll_event(sf::Event& event) {
-    return window_.pollEvent(event);
 }
 
 void Graphics::clip_piece(sf::RectangleShape& piece, int from_left, int from_top) {
@@ -158,17 +139,17 @@ void Graphics::render_piece(int x, int y) {
     //Move the graphic to the position of the piece on the board
     piece.setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
     //Draw the piece
-    window_.draw(piece);
+    window_->draw(piece);
 }
 
 void Graphics::highlight_square(int x, int y) {
     //Move the highlight into position
     highlight_.setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
     //Draw the highlighted square
-    window_.draw(highlight_);
+    window_->draw(highlight_);
 }
 
 void Graphics::outline_square(int x, int y) {
     outline_.setPosition((x)*SQUARESIZE+OUTLINEWIDTH, (y)*SQUARESIZE+OUTLINEWIDTH);
-    window_.draw(outline_);
+    window_->draw(outline_);
 }

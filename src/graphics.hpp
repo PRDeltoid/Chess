@@ -5,23 +5,17 @@
 #include "board.hpp"
 #include "highlight.hpp"
 #include "outline.hpp"
+#include "window.hpp"
 
-const int WIDTH = 800;
-const int HEIGHT = 800;
 const int SQUARESIZE = 100;
 const int OUTLINEWIDTH = 3;
 
 class Graphics {
     public:
-        Graphics(Board* board, Highlight* highlighter, Outline* outliner);
+        Graphics(Board* board, Highlight* highlighter, Outline* outliner, Window* window);
         ~Graphics() {}
         void initialize();
-        bool window_open();
         void draw();
-        void clear();
-        void display();
-        void close_window();
-        bool poll_event(sf::Event& event);
         void clip_piece(sf::RectangleShape& piece, int from_left, int from_top);
         void clip_all_pieces();
         void load_spritesheet(std::string filename);
@@ -31,7 +25,8 @@ class Graphics {
         void outline_square(int x, int y);
 
     private:
-        sf::RenderWindow window_;
+        //sf::RenderWindow window_;
+        Window* window_;
         Board* board_;
         Highlight* highlighter_;
         Outline* outliner_;
