@@ -8,6 +8,9 @@
 #include "outline.cpp"
 #include "dataloader.cpp"
 
+//Forward delc. of UI to prevent circle dependancy
+class UI;
+
 class Game
 {
     public:
@@ -32,6 +35,7 @@ class Game
         Highlight* highlighter_;
         Outline* outliner_;
         DataLoader* dataloader_;
+        UI* ui_;
 };
 
 #endif

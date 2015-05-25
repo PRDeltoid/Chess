@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "ui.cpp"
 
 //Ctor
 Game::Game() {
@@ -8,6 +9,7 @@ Game::Game() {
     graphics_    = new Graphics(board_, highlighter_, outliner_);
     movement_    = new Movement(board_);
     dataloader_  = new DataLoader(board_);
+    ui_          = new UI(this);
     board_->initialize_board();
     dataloader_->load_pieces("data/piecedata");
     active_player = white;
@@ -32,45 +34,6 @@ void Game::switch_player() {
     }
 }
 
-//Determine if the position had a piece, and the piece clicked belongs to the current player
-//Returns true if the piece clicked is the current player
-//Returns false if a piece wasn't clicked, or the piece belongs to the inactive player
-bool Game::was_piece_clicked(Pos pos_clicked) {
-    if(!board_->check_empty(pos_clicked.x_, pos_clicked.y_) && 
-        board_->check_space(pos_clicked.x_, pos_clicked.y_)->get_color() == active_player) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-//Handle when a piece is clicked
-void Game::piece_clicked(Pos pos) {
-    Piece* clicked_piece = board_->check_space(pos.x_, pos.y_);
-    if(board_->get_active_piece() == clicked_piece)        //Check if the piece clicked is already active
-        return;                                           
-    board_->set_active_piece(clicked_piece);               //Set the clicked piece to active
-    outliner_->clear_all_outlines();                       //Clear previous outlines
-    outliner_->set_outline(pos.x_, pos.y_, true);          //Create an outline around the clicked piecce
-    highlighter_->clear_all_highlights();                  //Clear all previous highlighting
-    vector<Pos> valid_moves = movement_->get_valid_moves(clicked_piece); //Get the valid moves for the piece
-    highlighter_->highlight_valid_moves(valid_moves);      //Highlight the valid moves for the piece
-}
-
-//Determines if a valid move was clicked
-bool Game::move_clicked(Pos pos_clicked) {
-    bool valid_move = movement_->is_valid_move(pos_clicked);
-    if(valid_move) {  
-        //clear the board of all highlighting/outlining etc.
-        highlighter_->clear_all_highlights();
-        outliner_->clear_all_outlines();
-        movement_->clear_valid_moves();
-        //Lastly, switch the active player
-        switch_player();
-    }
-    return valid_move;
-}
-
 //Main Game loop. 
 void Game::Loop() {
     sf::Event event;
@@ -80,16 +43,7 @@ void Game::Loop() {
                 graphics_->close_window();
                 break;
             } else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                //Get the position that was clicked
-                Pos pos_clicked = board_->find_clicked_pos(event.mouseButton.x, event.mouseButton.y);
-                //Determine if the position clicked is a valid move (only if there is an active piece)
-                //If it is, move the piece
-                if(board_->get_active_piece() != NULL && move_clicked(pos_clicked)) {
-                    break;
-                }
-                //Determine if the position had a piece, and the piece clicked belongs to the current player
-                if(was_piece_clicked(pos_clicked))
-                    piece_clicked(pos_clicked);
+                ui_->interact(event);
             }
         }
         graphics_->clear();      //Clear previously drawn screen
