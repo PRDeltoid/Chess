@@ -19,6 +19,10 @@ vector<Pos> Movement::get_valid_moves(Piece* piece) {
             break;
         case knight:
             valid_moves = get_knight_move(piece);
+            break;
+        case king:
+            valid_moves = get_king_move(piece);
+            break;
         default:
             break;
     };
@@ -127,19 +131,19 @@ vector<Pos> Movement::get_pawn_move(Piece* piece) {
 }
 
 vector<Pos> Movement::get_pawn_kill_moves(Pos piece_pos, int move_direction) {
-    Piece* piece1 = board_->check_space(piece_pos.x_ + (1*move_direction), piece_pos.y_ + (1*move_direction));
-    Pos piece1_pos = board_-> find_piece_pos(piece1);
-    Piece* piece2 = board_->check_space(piece_pos.x_ - (1*move_direction), piece_pos.y_ - (1*move_direction));
-    Pos piece2_pos = board_-> find_piece_pos(piece2);
     vector<Pos> kill_moves;
+    //Check the killzones for the current piece.
+    Piece* piece1 = board_->check_space(piece_pos.x_ - move_direction, piece_pos.y_ + move_direction);
+    Pos piece1_pos = board_-> find_piece_pos(piece1);
+    Piece* piece2 = board_->check_space(piece_pos.x_ + move_direction, piece_pos.y_ + move_direction);
+    Pos piece2_pos = board_-> find_piece_pos(piece2);
     
+    //If there is a piece in the kill zones, add the move as a valid one
     if(piece1 != NULL) {
-        if(!share_color(piece_pos, piece1_pos))
-            kill_moves.push_back(piece1_pos);
+        add_move(piece1_pos, piece_pos, kill_moves);
     }
     if(piece2 != NULL) {
-        if(!share_color(piece_pos, piece2_pos))
-            kill_moves.push_back(piece2_pos);
+        add_move(piece2_pos, piece_pos, kill_moves);
     }
     return kill_moves;
 }
