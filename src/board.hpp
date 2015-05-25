@@ -25,6 +25,7 @@ class Board {
         Piece* check_space(int x, int y);
         bool check_empty(int x, int y);
         void move_space(int x_from, int y_from, int x_to, int y_to);
+        void move_space(Pos pos_from, Pos pos_to);
         void set_active_piece(Piece* piece);
         Piece* get_active_piece();
         Space* get_spaces();

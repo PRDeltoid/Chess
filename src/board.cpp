@@ -75,6 +75,18 @@ void Board::move_space(int x_from, int y_from, int x_to, int y_to) {
     }
 }
 
+//Move a piece from one space to another.
+void Board::move_space(Pos pos_from, Pos pos_to) {
+    //Find the piece to move
+    Piece* moving_piece = check_space(pos_from.x_, pos_from.y_);
+    if(moving_piece != NULL) {
+        //Move it
+        set_space(pos_to.x_, pos_to.y_, moving_piece);
+        //Clean up afterwards
+        reset_space(pos_from.x_, pos_from.y_);
+    }
+}
+
 //Set a piece to the "active piece,", which can be move
 void Board::set_active_piece(Piece* piece) {
     active_piece_ = piece;
