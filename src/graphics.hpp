@@ -26,7 +26,6 @@ class Graphics {
         void outline_square(int x, int y);
 
     private:
-        //sf::RenderWindow window_;
         Window* window_;
         Board* board_;
         Highlight* highlighter_;

@@ -7,6 +7,10 @@
 
 class UI {
     Game* game_;
+    Outline* outliner_;
+    Highlight* highlighter_;
+    Movement* movement_;
+    Board* board_;
     bool was_piece_clicked(Pos pos_clicked);
     void piece_clicked(Pos pos);
     bool move_clicked(Pos pos_clicked);

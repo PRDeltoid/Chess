@@ -8,9 +8,9 @@ Game::Game() {
     highlighter_ = new Highlight(board_);
     outliner_    = new Outline(board_);
     window_      = new Window();
-    graphics_    = new Graphics(this);
     movement_    = new Movement(board_);
     dataloader_  = new DataLoader(board_);
+    graphics_    = new Graphics(this);
     ui_          = new UI(this);
     board_->initialize_board();
     dataloader_->load_pieces("data/piecedata");
@@ -46,7 +46,8 @@ void Game::Loop() {
             if (event.type == sf::Event::Closed) {
                 window_->close();
                 break;
-            } else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            } else if(event.type == sf::Event::MouseButtonPressed &&
+                      event.mouseButton.button == sf::Mouse::Left) {
                 ui_->interact(event);
             }
         }

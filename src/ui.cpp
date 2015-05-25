@@ -2,6 +2,10 @@
 
 UI::UI(Game* game) {
     game_ = game;
+    outliner_ = game_->get_outliner();
+    highlighter_ = game_->get_highlighter();
+    movement_ = game_->get_movement();
+    board_ = game_->get_board();
 }
 
 //WILL BE CHANGED
@@ -37,37 +41,33 @@ bool UI::was_piece_clicked(Pos pos_clicked) {
 //The Pos passed is the location that was clicked (which is already known
 //to have a piece on it)
 void UI::piece_clicked(Pos pos) {
-    Board* board = game_->get_board();
-    Outline* outliner = game_->get_outliner();
-    Highlight* highlighter = game_->get_highlighter();
-    Movement* movement = game_->get_movement();
-    Piece* clicked_piece = board->check_space(pos.x_, pos.y_);
+    Piece* clicked_piece = board_->check_space(pos.x_, pos.y_);
 
-    if(board->get_active_piece() == clicked_piece)        //Check if the piece clicked is already active
+    if(board_->get_active_piece() == clicked_piece)        //Check if the piece clicked is already active
         return;                                           
-    board->set_active_piece(clicked_piece);               //Set the clicked piece to active
-    outliner->clear_all_outlines();                       //Clear previous outlines
-    outliner->set_outline(pos.x_, pos.y_, true);          //Create an outline around the clicked piecce
-    highlighter->clear_all_highlights();                  //Clear all previous highlighting
-    vector<Pos> valid_moves = movement->get_valid_moves(clicked_piece); //Get the valid moves for the piece
-    highlighter->highlight_valid_moves(valid_moves);      //Highlight the valid moves for the piece
+    board_->set_active_piece(clicked_piece);               //Set the clicked piece to active
+    outliner_->clear_all_outlines();                       //Clear previous outlines
+    outliner_->set_outline(pos.x_, pos.y_, true);          //Create an outline around the clicked piecce
+    highlighter_->clear_all_highlights();                  //Clear all previous highlighting
+    vector<Pos> valid_moves = movement_->get_valid_moves(clicked_piece); //Get the valid moves for the piece
+    highlighter_->highlight_valid_moves(valid_moves);      //Highlight the valid moves for the piece
 }
 
 //Checks if the clicked pos is a valid move
 //If it is, move the piece and return true
 //Otherwise, return false (ie. the move was not a valid one)
 bool UI::move_clicked(Pos pos_clicked) {
-    Outline* outliner = game_->get_outliner();
-    Highlight* highlighter = game_->get_highlighter();
-    Movement* movement = game_->get_movement();
-    //Valid move is true if the move was valid, and the piece was moved
-    bool valid_move = movement->is_valid_move(pos_clicked);
-    //If the piece was moved, clear all the effects and switch players
+    //Valid move is true if the move was valid,
+    bool valid_move = movement_->is_valid_move(pos_clicked);
+    //If the move clicked was valid, move the piece, clear all the effects and switch players
     if(valid_move) {  
+        Pos piece_pos = game_->get_board()->find_piece_pos(game_->get_board()->get_active_piece());
+        //Move the piece
+        movement_->move_piece(piece_pos, pos_clicked);
         //clear the board of all highlighting/outlining etc.
-        highlighter->clear_all_highlights();
-        outliner->clear_all_outlines();
-        movement->clear_valid_moves();
+        highlighter_->clear_all_highlights();
+        outliner_->clear_all_outlines();
+        movement_->clear_valid_moves();
         //Lastly, switch the active player
         game_->switch_player();
     }
