@@ -14,8 +14,14 @@ class Game
         Game();
         ~Game();
         void Loop();
-    private:
+        Board* get_board() { return board_; }
+        Movement* get_movement() { return movement_; }
+        Highlight* get_highlighter() { return highlighter_; }
+        Outline* get_outliner() { return outliner_; }
+        COLOR get_active_player() { return active_player; }
         void switch_player();
+
+    private:
         bool was_piece_clicked(Pos pos_clicked);
         void piece_clicked(Pos pos);
         bool move_clicked(Pos pos_clicked);

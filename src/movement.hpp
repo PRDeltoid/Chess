@@ -18,6 +18,7 @@ class Movement {
         vector<Pos> get_diag(Piece* piece);
         vector<Pos> get_antidiag(Piece* piece);
         vector<Pos> get_pawn_move(Piece* piece);
+        vector<Pos> get_pawn_kill_moves(Pos piece_pos, int move_direction);
         vector<Pos> get_knight_move(Piece* piece);
         vector<Pos> get_king_move(Piece* piece);
         vector<Pos> merge_vector(vector<Pos> vector1, vector<Pos> vector2);

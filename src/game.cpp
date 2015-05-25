@@ -59,7 +59,16 @@ void Game::piece_clicked(Pos pos) {
 
 //Determines if a valid move was clicked
 bool Game::move_clicked(Pos pos_clicked) {
-    return movement_->is_valid_move(pos_clicked);
+    bool valid_move = movement_->is_valid_move(pos_clicked);
+    if(valid_move) {  
+        //clear the board of all highlighting/outlining etc.
+        highlighter_->clear_all_highlights();
+        outliner_->clear_all_outlines();
+        movement_->clear_valid_moves();
+        //Lastly, switch the active player
+        switch_player();
+    }
+    return valid_move;
 }
 
 //Main Game loop. 
@@ -74,13 +83,8 @@ void Game::Loop() {
                 //Get the position that was clicked
                 Pos pos_clicked = board_->find_clicked_pos(event.mouseButton.x, event.mouseButton.y);
                 //Determine if the position clicked is a valid move (only if there is an active piece)
-                //If it is, move the piece and clear the board of all highlighting/outlining etc.
-                //Lastly, switch the active player
+                //If it is, move the piece
                 if(board_->get_active_piece() != NULL && move_clicked(pos_clicked)) {
-                    highlighter_->clear_all_highlights();
-                    outliner_->clear_all_outlines();
-                    movement_->clear_valid_moves();
-                    switch_player();
                     break;
                 }
                 //Determine if the position had a piece, and the piece clicked belongs to the current player

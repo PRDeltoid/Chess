@@ -19,6 +19,7 @@ class Piece {
         TYPE get_type() { return piece_type_; }
         COLOR get_color() { return piece_color_; }
         bool has_moved() { return has_moved_; }
+        void set_moved(bool moved) { has_moved_ = moved; }
     private:
         TYPE piece_type_;
         COLOR piece_color_;

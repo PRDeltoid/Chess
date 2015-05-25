@@ -104,8 +104,9 @@ vector<Pos> Movement::get_pawn_move(Piece* piece) {
     int move_distance = 1,
         move_direction = 1;
     //Determine the move distance
-    if(!piece->has_moved())
+    if(!piece->has_moved()) {
         move_distance = 2;
+    }
      //Determine is the move goes up or down
     if(piece->get_color() == black)
         move_direction = -1;
@@ -113,11 +114,34 @@ vector<Pos> Movement::get_pawn_move(Piece* piece) {
     for(int i=1; i <= move_distance; i++) {
         move_pos.y_ = piece_pos.y_ + (i*move_direction);
         move_pos.x_ = piece_pos.x_;
+        if(blocked(move_pos))
+            break;
         if(pos_valid(move_pos) && !blocked(move_pos))
             valid_moves.push_back(move_pos);
     }
+
+    vector<Pos> kill_moves = get_pawn_kill_moves(piece_pos, move_direction);
+    valid_moves = merge_vector(valid_moves, kill_moves);
     validate_pos_vector(valid_moves);
     return valid_moves;
+}
+
+vector<Pos> Movement::get_pawn_kill_moves(Pos piece_pos, int move_direction) {
+    Piece* piece1 = board_->check_space(piece_pos.x_ + (1*move_direction), piece_pos.y_ + (1*move_direction));
+    Pos piece1_pos = board_-> find_piece_pos(piece1);
+    Piece* piece2 = board_->check_space(piece_pos.x_ - (1*move_direction), piece_pos.y_ - (1*move_direction));
+    Pos piece2_pos = board_-> find_piece_pos(piece2);
+    vector<Pos> kill_moves;
+    
+    if(piece1 != NULL) {
+        if(!share_color(piece_pos, piece1_pos))
+            kill_moves.push_back(piece1_pos);
+    }
+    if(piece2 != NULL) {
+        if(!share_color(piece_pos, piece2_pos))
+            kill_moves.push_back(piece2_pos);
+    }
+    return kill_moves;
 }
 
 //Get knight valid moves. This piece can jump over other pieces
@@ -263,6 +287,7 @@ bool Movement::is_valid_move(Pos pos_clicked) {
         return false;
     for(unsigned int i=0; i < valid_moves_.size(); i++) {
         if(valid_moves_[i] == pos_clicked) {
+            board_->get_active_piece()->set_moved(true);
             Pos piece_pos = board_->find_piece_pos(board_->get_active_piece());
             move_piece(piece_pos, pos_clicked);
             return true;
