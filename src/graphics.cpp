@@ -61,6 +61,12 @@ void Graphics::display() {
     window_->display();
 }
 
+void Graphics::render() {
+    clear();
+    draw();
+    display();
+}
+
 void Graphics::clip_piece(sf::RectangleShape& piece, int from_left, int from_top) {
     //Create a clipping rectangle size 100x100 pixels. Position it using from_left and from_top
     sf::Rect<int> clip_rect;

@@ -50,9 +50,7 @@ void Game::Loop() {
                 ui_->interact(event);
             }
         }
-        graphics_->clear();      //Clear previously drawn screen
-        graphics_->draw();       //Draw, depending in current game state
-        graphics_->display();    //Show the drawing
+        graphics_->render();
     }
 }
 

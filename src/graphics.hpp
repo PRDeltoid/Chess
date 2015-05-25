@@ -16,9 +16,7 @@ class Graphics {
         Graphics(Game* game);
         ~Graphics() {}
         void initialize();
-        void draw();
-        void clear();
-        void display();
+        void render();
         void clip_piece(sf::RectangleShape& piece, int from_left, int from_top);
         void clip_all_pieces();
         void load_spritesheet(std::string filename);
@@ -33,6 +31,9 @@ class Graphics {
         Board* board_;
         Highlight* highlighter_;
         Outline* outliner_;
+        void draw();
+        void clear();
+        void display();
         sf::RectangleShape board_shapes_[BOARDSIZE];
         sf::Texture texture_sheet_;
         sf::Image texture_image_;
