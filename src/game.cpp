@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "ui.cpp"
 #include "graphics.cpp"
+#include "dataloader.cpp"
 
 //Ctor
 Game::Game() {
@@ -9,8 +10,8 @@ Game::Game() {
     outliner_    = new Outline(board_);
     window_      = new Window();
     movement_    = new Movement(board_);
-    dataloader_  = new DataLoader(board_);
     graphics_    = new Graphics(this);
+    dataloader_  = new DataLoader(board_, graphics_);
     ui_          = new UI(this);
     board_->initialize_board();
     dataloader_->load_pieces("data/piecedata");

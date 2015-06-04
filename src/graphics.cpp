@@ -9,6 +9,21 @@ Graphics::Graphics(Game* game) {
     initialize();
 }
 
+Graphics::~Graphics() {
+    delete white_king_;
+    delete white_queen_;
+    delete white_bishop_;
+    delete white_knight_;
+    delete white_rook_;
+    delete white_pawn_;
+    delete black_king_;
+    delete black_queen_;
+    delete black_bishop_;
+    delete black_knight_;
+    delete black_rook_;
+    delete black_pawn_;
+}
+
 //Load piece graphics. 
 //Create the board pieces (not the chess pieces, the board squares)
 //Clip the chess piece sprites from the spritesheet
@@ -51,9 +66,14 @@ void Graphics::draw() {
         int x = i%SIDESIZE; //Get the x coordinate for the space to draw
         int y = i/SIDESIZE; //Get the y coordinate for the space to draw
         window_->draw(board_shapes_[i]); //Draw the board background
-        //If a piece is found, draw the piece.
-        if(board_->check_space(x, y) != NULL)
-            render_piece(x, y); 
+
+        if(board_->check_space(x, y) != 0) {
+            Piece* piece = board_->check_space(x, y);
+            sf::RectangleShape* piece_shape = piece->get_shape();
+            piece_shape->setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
+            window_->draw(*piece_shape);
+        }
+
         //If highlight is true, highlight the square
         if(highlighter_->check_hightlight(x, y) == true)
             highlight_square(x, y);
@@ -80,7 +100,7 @@ void Graphics::render() {
 }
 
 //Clip a single chess piece graphics and store it in the piece variable
-void Graphics::clip_piece(sf::RectangleShape& piece, int from_left, int from_top) {
+sf::RectangleShape* Graphics::clip_piece(int from_left, int from_top) {
     //Create a clipping rectangle size 100x100 pixels. Position it using from_left and from_top
     sf::Rect<int> clip_rect;
     clip_rect.height = clip_rect.width = SQUARESIZE;
@@ -88,30 +108,31 @@ void Graphics::clip_piece(sf::RectangleShape& piece, int from_left, int from_top
     clip_rect.left = from_left * SQUARESIZE;
 
     //Use the clipping rect to clip a square from the spritesheet and store it in the piece.
-    piece.setSize(sf::Vector2f(SQUARESIZE, SQUARESIZE));
-    piece.setTexture(&texture_sheet_, false);
-    piece.setTextureRect(clip_rect);
+    sf::RectangleShape* piece = new sf::RectangleShape(sf::Vector2f(SQUARESIZE, SQUARESIZE));
+    piece->setTexture(&texture_sheet_, false);
+    piece->setTextureRect(clip_rect);
+    return piece;
 }
 
 //Go through the spritesheet and clip the chess piece graphics
 void Graphics::clip_all_pieces() {
-    clip_piece(white_king_, 0, 0);
-    clip_piece(black_king_, 0, 1);
+    white_king_ = clip_piece(0, 0);
+    black_king_ = clip_piece(0, 1);
 
-    clip_piece(white_queen_, 1, 0);
-    clip_piece(black_queen_, 1, 1);
+    white_queen_ = clip_piece(1, 0);
+    black_queen_ = clip_piece(1, 1);
 
-    clip_piece(white_bishop_, 2, 0);
-    clip_piece(black_bishop_, 2, 1);
+    white_bishop_ = clip_piece(2, 0);
+    black_bishop_ = clip_piece(2, 1);
 
-    clip_piece(white_knight_, 3, 0);
-    clip_piece(black_knight_, 3, 1);
+    white_knight_ = clip_piece(3, 0);
+    black_knight_ = clip_piece(3, 1);
     
-    clip_piece(white_rook_, 4, 0);
-    clip_piece(black_rook_, 4, 1);
+    white_rook_ = clip_piece(4, 0);
+    black_rook_ = clip_piece(4, 1);
     
-    clip_piece(white_pawn_, 5, 0);
-    clip_piece(black_pawn_, 5, 1);
+    white_pawn_ = clip_piece(5, 0);
+    black_pawn_ = clip_piece(5, 1);
 }
 
 //Loads a spritesheet from a file
@@ -123,7 +144,7 @@ void Graphics::load_spritesheet(std::string filename) {
 }
 
 //Returns the piece graphic to use depending on piece type and color
-sf::RectangleShape Graphics::find_piece_graphic(TYPE piece_type, COLOR piece_color) {
+sf::RectangleShape* Graphics::find_piece_graphic(TYPE piece_type, COLOR piece_color) {
     switch(piece_type) {
         case pawn:
             if(piece_color == white) return white_pawn_;
@@ -158,19 +179,6 @@ sf::RectangleShape Graphics::find_piece_graphic(TYPE piece_type, COLOR piece_col
             return white_pawn_;
             break;
     }
-}
-
-//Draw the piece that is at position x and y on the board
-void Graphics::render_piece(int x, int y) {
-    //Find the type and color of the piece in question
-    TYPE type = board_->check_space(x, y)->get_type();
-    COLOR color = board_->check_space(x, y)->get_color();
-    //Find the corrisponding graphic for piece of above type and color
-    sf::RectangleShape piece = find_piece_graphic(type, color);
-    //Move the graphic to the position of the piece on the board
-    piece.setPosition((x)*SQUARESIZE, (y)*SQUARESIZE);
-    //Draw the piece
-    window_->draw(piece);
 }
 
 //Draw a highlight over position x and y

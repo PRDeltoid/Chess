@@ -2,6 +2,7 @@
 #define PIECE_H
 
 #include <string>
+#include <SFML\Graphics.hpp>
 
 enum TYPE { pawn = 10,   rook = 20,  knight = 30,
             bishop = 40, queen = 50, king = 60 };
@@ -18,11 +19,14 @@ class Piece {
         virtual ~Piece() {}
         TYPE get_type() { return piece_type_; }
         COLOR get_color() { return piece_color_; }
+        sf::RectangleShape* get_shape();
+        void set_shape(sf::RectangleShape* piece_shape);
         bool has_moved() { return has_moved_; }
         void set_moved(bool moved) { has_moved_ = moved; }
     private:
         TYPE piece_type_;
         COLOR piece_color_;
+        sf::RectangleShape* piece_shape_;
         bool has_moved_;
 };
 

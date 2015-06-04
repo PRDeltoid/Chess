@@ -6,12 +6,12 @@
 #include "Board.cpp"
 #include "highlight.cpp"
 #include "outline.cpp"
-#include "dataloader.cpp"
 #include "window.hpp"
 
 //Forward delc. of UI to prevent circle dependancy
 class UI;
 class Graphics;
+class DataLoader;
 
 class Game
 {

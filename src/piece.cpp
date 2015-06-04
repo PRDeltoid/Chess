@@ -21,3 +21,11 @@ Piece::Piece(std::string piece_type, std::string piece_color) {
 
     has_moved_ = false;
 }
+
+sf::RectangleShape* Piece::get_shape() {
+    return piece_shape_;
+}
+
+void Piece::set_shape(sf::RectangleShape* piece_shape) {
+    piece_shape_ = piece_shape;
+}
