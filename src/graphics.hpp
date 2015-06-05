@@ -7,6 +7,7 @@
 #include "outline.hpp"
 #include "window.hpp"
 #include "game.hpp"
+#include "gfxPiece.cpp"
 
 const int SQUARESIZE = 100;
 const int OUTLINEWIDTH = 3;
@@ -17,12 +18,11 @@ class Graphics {
         ~Graphics();
         void initialize();
         void render();
-        sf::RectangleShape* clip_piece(int from_left, int from_top);
-        void clip_all_pieces();
-        void load_spritesheet(std::string filename);
-        sf::RectangleShape* find_piece_graphic(TYPE piece_type, COLOR piece_color);
+        void create_highlight_gfx();
+        void create_outline_gfx();
         void highlight_square(int x, int y);
         void outline_square(int x, int y);
+        gfxPiece* piece_graphics_;
 
     private:
         Window* window_;
@@ -33,26 +33,6 @@ class Graphics {
         void clear();
         void display();
         sf::RectangleShape board_shapes_[BOARDSIZE];
-        sf::Texture texture_sheet_;
-        sf::Image texture_image_;
-
-        sf::RectangleShape* white_king_;
-        sf::RectangleShape* black_king_;
-
-        sf::RectangleShape* white_queen_;
-        sf::RectangleShape* black_queen_;
-
-        sf::RectangleShape* white_bishop_;
-        sf::RectangleShape* black_bishop_;
-
-        sf::RectangleShape* white_knight_;
-        sf::RectangleShape* black_knight_;
-
-        sf::RectangleShape* white_rook_;
-        sf::RectangleShape* black_rook_;
-
-        sf::RectangleShape* white_pawn_;
-        sf::RectangleShape* black_pawn_;
 
         sf::RectangleShape highlight_;
         sf::RectangleShape outline_;

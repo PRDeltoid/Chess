@@ -107,5 +107,10 @@ Pos Board::find_clicked_pos(int mouse_x, int mouse_y) {
     Pos pos;
     pos.x_ = mouse_x/100;
     pos.y_ = mouse_y/100;
+    //Check if the position clicked is outside of the board
+    if(pos.x_ >= SIDESIZE || pos.y_ >= SIDESIZE) {
+        pos.x_ = -1;
+        pos.y_ = -1;
+    }
     return pos;
 }
